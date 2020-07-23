@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    const schedule = [
+      {
+        id: 52,
+        name: "Week 52",
+        weekdays: [
+          {
+            id: 1,
+            name: "Sunday",
+            schedule: [
+              { id: 0, task: "" },
+              { id: 1, task: "Pickup goods" },
+              { id: 2, task: "Pickup goods" },
+              { id: 3, task: "" },
+              { id: 4, task: "" },
+              { id: 5, task: "" },
+              { id: 6, task: "Other" },
+              { id: 7, task: "Other" },
+              { id: 8, task: "Other" },
+              { id: 9, task: "" },
+              { id: 10, task: "" },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 2,
+            name: "Monday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 3,
+            name: "Tuesday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 4,
+            name: "Wednesday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 5,
+            name: "Thursday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 6,
+            name: "Friday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+          {
+            id: 7,
+            name: "Saturday",
+            schedule: [
+              { id: 0, task: [] },
+              { id: 1, task: [] },
+              { id: 2, task: [] },
+              { id: 3, task: [] },
+              { id: 4, task: [] },
+              { id: 5, task: [] },
+              { id: 6, task: [] },
+              { id: 7, task: [] },
+              { id: 8, task: [] },
+              { id: 9, task: [] },
+              { id: 10, task: [] },
+              { id: 11, task: [] },
+              { id: 12, task: [] },
+              { id: 13, task: [] },
+              { id: 14, task: [] },
+              { id: 15, task: [] },
+              { id: 16, task: [] },
+              { id: 17, task: [] },
+              { id: 18, task: [] },
+              { id: 19, task: [] },
+              { id: 20, task: [] },
+              { id: 21, task: [] },
+              { id: 22, task: [] },
+              { id: 23, task: [] },
+            ],
+          },
+        ],
+      },
+    ];
+
+    $(document).ready(function () {
+      response = schedule[0].weekdays;
+
+      $(function () {
+        $.each(response, function (i, item) {
+          let $tr = $(`<tr id='D${item.id}'>`)
+            .append($("<td>").text(item.name))
+            .appendTo("#records_table");
+          $.each(item.schedule, function (i, hour) {
+            $(`#D${item.id}`).append($(`<td >`).text(hour.task));
+          });
+        });
+      });
+    });
+  </script>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+  </style>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <td></td>
+          <td>12am</td>
+          <td>1am</td>
+          <td>2am</td>
+          <td>3am</td>
+          <td>4am</td>
+          <td>5am</td>
+          <td>6am</td>
+          <td>7am</td>
+          <td>8am</td>
+          <td>9am</td>
+          <td>10am</td>
+          <td>11am</td>
+          <td>12pm</td>
+          <td>1pm</td>
+          <td>2pm</td>
+          <td>3pm</td>
+          <td>4pm</td>
+          <td>5pm</td>
+          <td>6pm</td>
+          <td>7pm</td>
+          <td>8pm</td>
+          <td>9pm</td>
+          <td>10pm</td>
+          <td>11pm</td>
+        </tr>
+      </thead>
+      <tbody id="records_table"></tbody>
+    </table>
+  </body>
+</html>
