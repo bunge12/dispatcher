@@ -7,6 +7,7 @@
   </head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="schedule.js"></script>
+  <script src="time.js"></script>
   <script>
     $(document).ready(function () {
       const updateRows = () => {
@@ -27,7 +28,6 @@
               }
             } else {
               $(this).next().attr("colspan", `${count}`);
-              // .replaceWith(`<td colspan="${count}">${track}</td>`);
               track = "";
               count = 0;
             }
@@ -44,7 +44,9 @@
             .appendTo("#records_table");
           $.each(item.schedule, function (i, hour) {
             $($tr).append(
-              $(`<td id='D${item.id}H${hour.id}'>`).text(hour.task)
+              $(`<td class="timeslot" id='D${item.id}H${hour.id}'>`).text(
+                hour.task
+              )
             );
           });
         });
@@ -65,8 +67,26 @@
         $(".week_num").text(start + 1);
         loadData();
       });
-      $("#new_toggle").click(function () {
-        $(".new_form").css("display", "");
+
+      $(document.body).on("click", ".timeslot", function () {
+        if ($(this).text() === "") {
+          let hour = parseInt($(this).attr("id").slice(3));
+          $(".new_form").css("display", "");
+          $(".datetime").text(
+            `${days[$(this).attr("id").slice(1, 2) - 1]} at ${hours[hour]}`
+          );
+          $("#length").empty();
+          let remain = hours.slice(hour + 1);
+          $.each(remain, function (index, text) {
+            $("#length").append(
+              $("<option></option>")
+                .val(index)
+                .html(`${text} (${index + 1} hour)`)
+            );
+          });
+        } else {
+          console.log("editing" + $(this).text(), $(this).attr("id"));
+        }
       });
 
       loadData();
@@ -119,12 +139,19 @@
     <div class="new_form" style="display: none;">
       = Add new task =
       <form action="index.html" method="POST">
-        Select Task:<select name="task" id="task">
+        When: Week <span class="week_num"></span>, <span class="datetime"></span
+        ><br />
+        Select Task:
+        <select name="task" id="task">
           <option value="pickup">Pickup</option>
           <option value="drop">Drop Off</option>
-          <option value="others">Others</option>
-        </select>
-        Details: <input type="text" /> When: <input type="date" />
+          <option value="others">Others</option> </select
+        ><br />
+        Details: <input type="text" /><br />
+        Finish:
+        <select name="length" id="length"> </select
+        ><br />
+        <button type="submit" class="save">Add to schedule</button>
       </form>
     </div>
   </body>
