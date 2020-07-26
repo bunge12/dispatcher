@@ -59,21 +59,44 @@
 
       $("#next").click(function () {
         start++;
+        $("#prev").removeAttr("disabled");
+        console.log(start + 1, schedule.length);
+        if (start + 1 === schedule.length) {
+          $(this).attr("disabled", "disabled");
+        }
         $(".week_num").text(start + 1);
+        $(".new_form").css("display", "none");
+        $("#add").each(function () {
+          this.reset();
+        });
         loadData();
       });
       $("#prev").click(function () {
         start--;
+        $("#next").removeAttr("disabled");
         $(".week_num").text(start + 1);
+        if (start === 0) {
+          $(this).attr("disabled", "disabled");
+        }
+        $(".new_form").css("display", "none");
+        $("#add").each(function () {
+          this.reset();
+        });
         loadData();
       });
 
       // Listen to change in "length" drop-down and check if event overlaps
       $(document.body).on("change", "#length", function () {
         let length = $(this).val();
-        // let date = $(".date_time").val();
         let [week, day, hour] = $(".date_time").val().split(".");
         console.log(week, day, hour, length);
+        for (let i = 0; i <= length; i++) {
+          if (
+            schedule[week].weekdays[day].schedule[parseInt(hour) + i].task != ""
+          ) {
+            $(".notification").text("Alert - events clash. ");
+          }
+        }
       });
 
       $(document.body).on("click", ".timeslot", function () {
@@ -119,8 +142,12 @@
               hr + i
             ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
           }
+          $(".new_form").css("display", "none");
         }
-
+        $("#add").each(function () {
+          this.reset();
+        });
+        $(".notification").text("Added!. ");
         loadData();
         // console.log(task.split("=")[1], details, length, week, day, hour);
         // schedule[week.split("=")[1]].weekdays[day].schedule[hour].task;
@@ -138,7 +165,8 @@
   </style>
   <body>
     Driver: Good Bob<br />
-    <button id="prev">Previous</button> | Week <span class="week_num"></span> |
+    <button id="prev" disabled>Previous</button> | Week
+    <span class="week_num"></span> |
     <button id="next">Next</button>
     <table>
       <thead>
@@ -172,7 +200,8 @@
       </thead>
       <tbody id="records_table"></tbody>
     </table>
-    To add a new task, click on an empty cell!
+    To add a new task, click on an empty cell. To edit existing assignment,
+    click on the cell containing it.
     <div class="new_form" style="display: none;">
       = Add new task =
       <form action="index.html" id="add" method="POST">
@@ -189,9 +218,9 @@
         <select name="length" id="length"> </select
         ><br />
         <input type="hidden" class="date_time" name="time" value="" />
-        <div class="notification"></div>
         <button type="submit" class="save">Add to schedule</button>
       </form>
     </div>
+    <div class="notification"></div>
   </body>
 </html>
