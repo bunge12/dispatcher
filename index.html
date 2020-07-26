@@ -68,13 +68,21 @@
         loadData();
       });
 
+      // Listen to change in "length" drop-down and check if event overlaps
+      $(document.body).on("change", "#length", function () {
+        let length = $(this).val();
+        // let date = $(".date_time").val();
+        let [week, day, hour] = $(".date_time").val().split(".");
+        console.log(week, day, hour, length);
+      });
+
       $(document.body).on("click", ".timeslot", function () {
         if ($(this).text() === "") {
           let hour = parseInt($(this).attr("id").slice(3));
+          let day = $(this).attr("id").slice(1, 2) - 1;
           $(".new_form").css("display", "");
-          $(".datetime").text(
-            `${days[$(this).attr("id").slice(1, 2) - 1]} at ${hours[hour]}`
-          );
+          $(".date_time").val(`${start}.${day}.${hour}`);
+          $(".datetime").text(`${days[day]} at ${hours[hour]}`);
           $("#length").empty();
           let remain = hours.slice(hour + 1);
           $.each(remain, function (index, text) {
@@ -87,6 +95,35 @@
         } else {
           console.log("editing" + $(this).text(), $(this).attr("id"));
         }
+      });
+      $(document.body).on("submit", "#add", function () {
+        event.preventDefault();
+        let form = $(this);
+        let data = form.serialize();
+        let [task, details, length, time] = data.split("&");
+        let [week, day, hour] = time.split(".");
+        let len = parseInt(length.split("=")[1]);
+        let hr = parseInt(hour.trim());
+        console.log(len);
+        if (len === 0) {
+          console.log(`Len is 0`);
+          schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
+            hour.trim()
+          ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
+          $(".new_form").css("display", "none");
+        } else {
+          console.log(`Len is over 0`);
+          for (let i = 0; i <= len; i++) {
+            console.log(`hr: ${hr}; i: ${i}`);
+            schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
+              hr + i
+            ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
+          }
+        }
+
+        loadData();
+        // console.log(task.split("=")[1], details, length, week, day, hour);
+        // schedule[week.split("=")[1]].weekdays[day].schedule[hour].task;
       });
 
       loadData();
@@ -138,19 +175,21 @@
     To add a new task, click on an empty cell!
     <div class="new_form" style="display: none;">
       = Add new task =
-      <form action="index.html" method="POST">
+      <form action="index.html" id="add" method="POST">
         When: Week <span class="week_num"></span>, <span class="datetime"></span
         ><br />
         Select Task:
         <select name="task" id="task">
-          <option value="pickup">Pickup</option>
-          <option value="drop">Drop Off</option>
-          <option value="others">Others</option> </select
+          <option value="Pickup">Pickup</option>
+          <option value="Drop off">Drop Off</option>
+          <option value="Others">Others</option> </select
         ><br />
-        Details: <input type="text" /><br />
+        Details: <input type="text" name="details" /><br />
         Finish:
         <select name="length" id="length"> </select
         ><br />
+        <input type="hidden" class="date_time" name="time" value="" />
+        <div class="notification"></div>
         <button type="submit" class="save">Add to schedule</button>
       </form>
     </div>
