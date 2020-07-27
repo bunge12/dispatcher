@@ -37,28 +37,34 @@
       // };
 
       const updateRows = () => {
-        $.each($("#records_table tr"), function () {
-          let track = "";
-          let count = 0;
-          $($("td", this).get().reverse()).each(function () {
-            let value = $(this).text();
-            console.log($(this));
-            if (value != "") {
-              if (value != track) {
-                track = value;
-                count = 0;
-              }
-              track = value;
-              count++;
-              if (count > 1) {
-                // $(this).remove();
-              }
+        var i = 0;
+        var $trs = $("#records_table tr");
+        $trs.each(function () {
+          var $tds = $(this).find("td");
+          var width = $tds.length;
+          var num = 2;
+          for (i = width - 2; i >= 0; i--) {
+            if (
+              $($tds[i]).html() == $($tds[i + 1]).html() &&
+              $($tds[i]).html() != ""
+            ) {
+              $($tds[i]).attr("colspan", num);
+              num++;
+              $($tds[i + 1]).remove();
             } else {
-              // $(this).next().attr("colspan", `${count}`);
-              track = "";
-              count = 0;
+              num = 2;
             }
-          });
+          }
+          $tds = $(this).find("td");
+          width = $tds.length;
+          $($tds[0]).attr("seq", 0);
+          for (i = 1; i < width; i++) {
+            $($tds[i]).attr(
+              "seq",
+              parseInt($($tds[i - 1]).attr("seq")) +
+                $($tds[i - 1]).prop("colspan")
+            );
+          }
         });
       };
 
