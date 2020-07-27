@@ -3,19 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dispatcher App</title>
   </head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="schedule.js"></script>
   <script src="time.js"></script>
   <script>
     $(document).ready(function () {
+      // const updateRows = () => {
+      //   $.each($("#records_table tr"), function () {
+      //     let track = "";
+      //     let count = 0;
+      //     $($("td", this).get().reverse()).each(function () {
+      //       let value = $(this).text();
+      //       if (value != "") {
+      //         if (value != track) {
+      //           track = value;
+      //           count = 0;
+      //         }
+      //         track = value;
+      //         count++;
+      //         if (count > 1) {
+      //           // console.log("removed");
+      //           $(this).remove();
+      //         }
+      //       } else {
+      //         $(this).next().attr("colspan", `${count}`);
+      //         track = "";
+      //         count = 0;
+      //       }
+      //     });
+      //   });
+      // };
+
       const updateRows = () => {
         $.each($("#records_table tr"), function () {
           let track = "";
           let count = 0;
           $($("td", this).get().reverse()).each(function () {
             let value = $(this).text();
+            console.log($(this));
             if (value != "") {
               if (value != track) {
                 track = value;
@@ -24,10 +51,10 @@
               track = value;
               count++;
               if (count > 1) {
-                $(this).remove();
+                // $(this).remove();
               }
             } else {
-              $(this).next().attr("colspan", `${count}`);
+              // $(this).next().attr("colspan", `${count}`);
               track = "";
               count = 0;
             }
@@ -43,11 +70,17 @@
             .append($("<td>").text(item.name))
             .appendTo("#records_table");
           $.each(item.schedule, function (i, hour) {
-            $($tr).append(
-              $(`<td class="timeslot" id='D${item.id}H${hour.id}'>`).text(
-                hour.task
-              )
-            );
+            if (Array.isArray(hour.task)) {
+              $($tr).append(
+                $(`<td class="timeslot" id='D${item.id}H${hour.id}'>`).text("")
+              );
+            } else {
+              $($tr).append(
+                $(`<td class="timeslot" id='D${item.id}H${hour.id}'>`).text(
+                  `${hour.task.job} ${hour.task.details}`
+                )
+              );
+            }
           });
         });
         updateRows();
@@ -92,7 +125,9 @@
         console.log(week, day, hour, length);
         for (let i = 0; i <= length; i++) {
           if (
-            schedule[week].weekdays[day].schedule[parseInt(hour) + i].task != ""
+            !Array.isArray(
+              schedule[week].weekdays[day].schedule[parseInt(hour) + i].task
+            )
           ) {
             $(".notification").text("Alert - events clash. ");
           }
@@ -123,16 +158,22 @@
         event.preventDefault();
         let form = $(this);
         let data = form.serialize();
-        let [task, details, length, time] = data.split("&");
+        let [task, details, location, length, time] = data.split("&");
         let [week, day, hour] = time.split(".");
         let len = parseInt(length.split("=")[1]);
         let hr = parseInt(hour.trim());
-        console.log(len);
+        // console.log(len);
         if (len === 0) {
           console.log(`Len is 0`);
           schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
             hour.trim()
-          ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
+          ].task = {
+            job: task.split("=")[1],
+            details: details.split("=")[1],
+            location: location.split("=")[1],
+            length: 1,
+          };
+          // ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
           $(".new_form").css("display", "none");
         } else {
           console.log(`Len is over 0`);
@@ -140,7 +181,12 @@
             console.log(`hr: ${hr}; i: ${i}`);
             schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
               hr + i
-            ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
+            ].task = {
+              job: task.split("=")[1],
+              details: details.split("=")[1],
+              location: location.split("=")[1],
+              length: len + 1,
+            };
           }
           $(".new_form").css("display", "none");
         }
@@ -149,8 +195,6 @@
         });
         $(".notification").text("Added!. ");
         loadData();
-        // console.log(task.split("=")[1], details, length, week, day, hour);
-        // schedule[week.split("=")[1]].weekdays[day].schedule[hour].task;
       });
 
       loadData();
@@ -214,6 +258,7 @@
           <option value="Others">Others</option> </select
         ><br />
         Details: <input type="text" name="details" /><br />
+        Location: <input type="text" name="location" /><br />
         Finish:
         <select name="length" id="length"> </select
         ><br />
