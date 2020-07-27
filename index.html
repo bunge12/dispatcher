@@ -10,32 +10,6 @@
   <script src="time.js"></script>
   <script>
     $(document).ready(function () {
-      // const updateRows = () => {
-      //   $.each($("#records_table tr"), function () {
-      //     let track = "";
-      //     let count = 0;
-      //     $($("td", this).get().reverse()).each(function () {
-      //       let value = $(this).text();
-      //       if (value != "") {
-      //         if (value != track) {
-      //           track = value;
-      //           count = 0;
-      //         }
-      //         track = value;
-      //         count++;
-      //         if (count > 1) {
-      //           // console.log("removed");
-      //           $(this).remove();
-      //         }
-      //       } else {
-      //         $(this).next().attr("colspan", `${count}`);
-      //         track = "";
-      //         count = 0;
-      //       }
-      //     });
-      //   });
-      // };
-
       const updateRows = () => {
         var i = 0;
         var $trs = $("#records_table tr");
@@ -105,7 +79,11 @@
         }
         $(".week_num").text(start + 1);
         $(".new_form").css("display", "none");
+        $(".update_form").css("display", "none");
         $("#add").each(function () {
+          this.reset();
+        });
+        $("#edit").each(function () {
           this.reset();
         });
         loadData();
@@ -118,7 +96,11 @@
           $(this).attr("disabled", "disabled");
         }
         $(".new_form").css("display", "none");
+        $(".update_form").css("display", "none");
         $("#add").each(function () {
+          this.reset();
+        });
+        $("#edit").each(function () {
           this.reset();
         });
         loadData();
@@ -140,11 +122,26 @@
         }
       });
 
+      // Listen to change in "time" for edited event drop-down, repopulate "length"
+      $(document.body).on("change", "#new_time", function () {
+        $("#length_edit").empty();
+        let remain = hours.slice(parseInt($(this).val()) + 1);
+        $.each(remain, function (index, text) {
+          $("#length_edit").append(
+            $("<option></option>")
+              .val(index)
+              .html(`${text} (${index + 1} hour)`)
+          );
+        });
+      });
+
+      // Listen to clicks on a timeslot, show new/edit form
       $(document.body).on("click", ".timeslot", function () {
         if ($(this).text() === "") {
           let hour = parseInt($(this).attr("id").slice(3));
           let day = $(this).attr("id").slice(1, 2) - 1;
           $(".new_form").css("display", "");
+          $(".update_form").css("display", "none");
           $(".date_time").val(`${start}.${day}.${hour}`);
           $(".datetime").text(`${days[day]} at ${hours[hour]}`);
           $("#length").empty();
@@ -160,19 +157,50 @@
           console.log("editing" + $(this).text(), $(this).attr("id"));
           $(`#task option`).removeAttr("selected");
           let hour = parseInt($(this).attr("id").slice(3));
+          // console.log();
           let day = $(this).attr("id").slice(1, 2) - 1;
+          $(".date_time_original").val(`${start}.${day}.${hour}`);
           $(".date_time").val(`${start}.${day}.${hour}`);
           $(".datetime").text(`${days[day]} at ${hours[hour]}`);
           $(".update_form").css("display", "");
+          $(".new_form").css("display", "none");
           $("#details").val(
             schedule[start].weekdays[day].schedule[hour].task.details
           );
           $("#location").val(
             schedule[start].weekdays[day].schedule[hour].task.location
           );
+          $("#length_edit").empty();
+          $("#new_day").empty();
+          $.each(days, function (index, text) {
+            $("#new_day").append(
+              $("<option></option>").val(index).html(`${text}`)
+            );
+          });
+          $(`#new_day option[value='${day}']`).attr("selected", "selected");
+          $("#new_time").empty();
+          $.each(hours, function (index, text) {
+            $("#new_time").append(
+              $("<option></option>").val(index).html(`${text}`)
+            );
+          });
+          $(`#new_time option[value='${hour}']`).attr("selected", "selected");
+
+          let remain = hours.slice(hour + 1);
+          $.each(remain, function (index, text) {
+            $("#length_edit").append(
+              $("<option></option>")
+                .val(index)
+                .html(`${text} (${index + 1} hour)`)
+            );
+          });
           $(
             `#task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
           ).attr("selected", "selected");
+          $(`#length_edit option[value='${$(this).attr("colspan") - 1}']`).attr(
+            "selected",
+            "selected"
+          );
         }
       });
       $(document.body).on("submit", "#add", function () {
@@ -215,6 +243,15 @@
           this.reset();
         });
         $(".notification").text("Added!. ");
+        loadData();
+      });
+
+      $(document.body).on("submit", "#edit", function () {
+        event.preventDefault();
+        let form = $(this);
+        let data = form.serialize();
+        console.log(data);
+        $(".notification").text("Edited!. ");
         loadData();
       });
 
@@ -268,6 +305,7 @@
     To add a new task, click on an empty cell. To edit existing assignment,
     click on the cell containing it.<br />
     <div class="new_form" style="display: none;">
+      Add
       <form action="index.html" id="add" method="POST">
         When: Week <span class="week_num"></span>, <span class="datetime"></span
         ><br />
@@ -287,8 +325,12 @@
       </form>
     </div>
     <div class="update_form" style="display: none;">
+      Edit
       <form action="index.html" id="edit" method="POST">
-        When: Week <span class="week_num"></span>, <span class="datetime"></span
+        When: Week <span class="week_num"></span>,
+        <select name="new_day" id="new_day"> </select>
+        at
+        <select name="new_time" id="new_time"> </select
         ><br />
         Select Task:
         <select name="task" id="task">
@@ -299,9 +341,16 @@
         Details: <input type="text" name="details" id="details" /><br />
         Location: <input type="text" name="location" id="location" /><br />
         Finish:
-        <select name="length" id="length"> </select
+        <select name="length" id="length_edit"> </select
         ><br />
-        <input type="hidden" class="date_time" name="time" value="" />
+
+        <input
+          type="hidden"
+          class="date_time_original"
+          name="original_time"
+          value=""
+        />
+        <input type="hidden" class="date_time" name="new_time" value="" />
         <button type="submit" class="save">Save update</button>
       </form>
     </div>
