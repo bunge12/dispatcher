@@ -8,33 +8,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="schedule.js"></script>
   <script src="time.js"></script>
+  <script src="script.js"></script>
   <script>
     $(document).ready(function () {
-      const saveEvent = (eventDetails) => {
-        const {
-          task,
-          details,
-          location,
-          length,
-          week,
-          day,
-          hour,
-        } = eventDetails;
-        let correctedLength = parseInt(length) + 1;
-        for (let i = 0; i < correctedLength; i++) {
-          console.log("write once");
-          schedule[week].weekdays[day].schedule[parseInt(hour) + i].task = {
-            job: task,
-            details: details,
-            location: location,
-          };
-        }
-      };
-
-      const cleanup = (text) => {
-        return text.split("=")[1];
-      };
-
       const updateRows = () => {
         var i = 0;
         var $trs = $("#records_table tr");
@@ -301,8 +277,6 @@
         event.preventDefault();
         let form = $(this);
         let data = form.serialize();
-        console.log(data);
-        // new_day=4&new_time=1&task=Pickup&details=food&location=Toronto&length=1&original_time=0.0.1&original_len=1
         let [
           new_day,
           new_time,
@@ -315,13 +289,19 @@
         ] = data.split("&");
         // Delete old record
         let [week, day, hour] = original_time.split("=")[1].split(".");
-        console.log(week, day, hour);
-        for (let i = 0; i <= parseInt(original_len.split("=")[1]); i++) {
-          console.log("we here");
-          schedule[parseInt(week.trim())].weekdays[
-            parseInt(day.trim())
-          ].schedule[parseInt(hour.trim()) + i].task = [];
-        }
+        deleteEvent({
+          week,
+          day,
+          hour,
+          length: parseInt(original_len.split("=")[1]),
+        });
+        // console.log(week, day, hour);
+        // for (let i = 0; i <= parseInt(original_len.split("=")[1]); i++) {
+        //   console.log("we here");
+        //   schedule[parseInt(week.trim())].weekdays[
+        //     parseInt(day.trim())
+        //   ].schedule[parseInt(hour.trim()) + i].task = [];
+        // }
         // Create new record
         saveEvent({
           task: cleanup(task),
@@ -332,6 +312,8 @@
           day: cleanup(new_day),
           hour: cleanup(new_time),
         });
+        // Hide & reset form, show feedback, reload data
+        $(".update_form").css("display", "none").trigger("reset");
         $(".notification").text("Edited").addClass("success");
         loadData();
       });
