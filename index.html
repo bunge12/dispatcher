@@ -10,6 +10,31 @@
   <script src="time.js"></script>
   <script>
     $(document).ready(function () {
+      const saveEvent = (eventDetails) => {
+        const {
+          task,
+          details,
+          location,
+          length,
+          week,
+          day,
+          hour,
+        } = eventDetails;
+        let correctedLength = parseInt(length) + 1;
+        for (let i = 0; i < correctedLength; i++) {
+          console.log("write once");
+          schedule[week].weekdays[day].schedule[parseInt(hour) + i].task = {
+            job: task,
+            details: details,
+            location: location,
+          };
+        }
+      };
+
+      const cleanup = (text) => {
+        return text.split("=")[1];
+      };
+
       const updateRows = () => {
         var i = 0;
         var $trs = $("#records_table tr");
@@ -108,6 +133,7 @@
 
       // Listen to change in "length" drop-down and check if event overlaps
       $(document.body).on("change", "#length", function () {
+        $(".notification").empty();
         let length = $(this).val();
         let [week, day, hour] = $(".date_time").val().split(".");
         console.log(week, day, hour, length);
@@ -115,6 +141,25 @@
           if (
             !Array.isArray(
               schedule[week].weekdays[day].schedule[parseInt(hour) + i].task
+            )
+          ) {
+            $(".notification").text("Alert - events clash. ");
+          }
+        }
+      });
+
+      // Listen to change in "length" drop-down and check if event overlaps
+      $(document.body).on("change", "#length_edit", function () {
+        $(".notification").empty();
+        let length = $(this).val();
+        let new_day = $("#new_day").val();
+        let new_time = $("#new_time").val();
+        console.log(new_day, new_time, length);
+        for (let i = 0; i <= length; i++) {
+          if (
+            !Array.isArray(
+              schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
+                .task
             )
           ) {
             $(".notification").text("Alert - events clash. ");
@@ -133,10 +178,15 @@
               .html(`${text} (${index + 1} hour)`)
           );
         });
+        $(`#length_edit option[value='${$(".original_len").val()}']`).attr(
+          "selected",
+          "selected"
+        );
       });
 
       // Listen to clicks on a timeslot, show new/edit form
       $(document.body).on("click", ".timeslot", function () {
+        $(".notification").empty();
         if ($(this).text() === "") {
           let hour = parseInt($(this).attr("id").slice(3));
           let day = $(this).attr("id").slice(1, 2) - 1;
@@ -194,6 +244,7 @@
                 .html(`${text} (${index + 1} hour)`)
             );
           });
+          $(".original_len").val($(this).attr("colspan") - 1);
           $(
             `#task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
           ).attr("selected", "selected");
@@ -251,7 +302,37 @@
         let form = $(this);
         let data = form.serialize();
         console.log(data);
-        $(".notification").text("Edited!. ");
+        // new_day=4&new_time=1&task=Pickup&details=food&location=Toronto&length=1&original_time=0.0.1&original_len=1
+        let [
+          new_day,
+          new_time,
+          task,
+          details,
+          location,
+          length,
+          original_time,
+          original_len,
+        ] = data.split("&");
+        // Delete old record
+        let [week, day, hour] = original_time.split("=")[1].split(".");
+        console.log(week, day, hour);
+        for (let i = 0; i <= parseInt(original_len.split("=")[1]); i++) {
+          console.log("we here");
+          schedule[parseInt(week.trim())].weekdays[
+            parseInt(day.trim())
+          ].schedule[parseInt(hour.trim()) + i].task = [];
+        }
+        // Create new record
+        saveEvent({
+          task: cleanup(task),
+          details: cleanup(details),
+          location: cleanup(location),
+          length: cleanup(length),
+          week,
+          day: cleanup(new_day),
+          hour: cleanup(new_time),
+        });
+        $(".notification").text("Edited").addClass("success");
         loadData();
       });
 
@@ -350,7 +431,13 @@
           name="original_time"
           value=""
         />
-        <input type="hidden" class="date_time" name="new_time" value="" />
+        <input
+          type="hidden"
+          class="original_len"
+          name="original_len"
+          value=""
+        />
+
         <button type="submit" class="save">Save update</button>
       </form>
     </div>
