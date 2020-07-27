@@ -81,6 +81,7 @@
         $(".week_num").text(start + 1);
         $(".new_form").css("display", "none");
         $(".update_form").css("display", "none");
+        $(".notification").empty();
         $("#add").each(function () {
           this.reset();
         });
@@ -98,6 +99,7 @@
         }
         $(".new_form").css("display", "none");
         $(".update_form").css("display", "none");
+        $(".notification").empty();
         $("#add").each(function () {
           this.reset();
         });
@@ -220,7 +222,13 @@
                 .html(`${text} (${index + 1} hour)`)
             );
           });
-          $(".original_len").val($(this).attr("colspan") - 1);
+          let valueOfColspan = $(this).attr("colspan");
+          if (!valueOfColspan) {
+            $(".original_len").val(0);
+          } else {
+            $(".original_len").val($(this).attr("colspan") - 1);
+          }
+
           $(
             `#task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
           ).attr("selected", "selected");
@@ -231,49 +239,30 @@
         }
       });
       $(document.body).on("submit", "#add", function () {
+        //Receive data, destructure it
         event.preventDefault();
         let form = $(this);
         let data = form.serialize();
         let [task, details, location, length, time] = data.split("&");
         let [week, day, hour] = time.split(".");
-        let len = parseInt(length.split("=")[1]);
-        let hr = parseInt(hour.trim());
-        // console.log(len);
-        if (len === 0) {
-          console.log(`Len is 0`);
-          schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
-            hour.trim()
-          ].task = {
-            job: task.split("=")[1],
-            details: details.split("=")[1],
-            location: location.split("=")[1],
-            length: 1,
-          };
-          // ].task = `${task.split("=")[1]} ${details.split("=")[1]}`;
-          $(".new_form").css("display", "none");
-        } else {
-          console.log(`Len is over 0`);
-          for (let i = 0; i <= len; i++) {
-            console.log(`hr: ${hr}; i: ${i}`);
-            schedule[week.split("=")[1]].weekdays[day.trim()].schedule[
-              hr + i
-            ].task = {
-              job: task.split("=")[1],
-              details: details.split("=")[1],
-              location: location.split("=")[1],
-              length: len + 1,
-            };
-          }
-          $(".new_form").css("display", "none");
-        }
-        $("#add").each(function () {
-          this.reset();
+        // Save Event
+        saveEvent({
+          task: cleanup(task),
+          details: cleanup(details),
+          location: cleanup(location),
+          length: cleanup(length),
+          week: cleanup(week),
+          day: day,
+          hour: hour,
         });
+        // Clear & reset the form, show feedback
+        $(".new_form").css("display", "none").trigger("reset");
         $(".notification").text("Added!. ");
         loadData();
       });
 
       $(document.body).on("submit", "#edit", function () {
+        // Receive and destructure data
         event.preventDefault();
         let form = $(this);
         let data = form.serialize();
@@ -287,21 +276,14 @@
           original_time,
           original_len,
         ] = data.split("&");
-        // Delete old record
         let [week, day, hour] = original_time.split("=")[1].split(".");
+        // Delete old record
         deleteEvent({
           week,
           day,
           hour,
           length: parseInt(original_len.split("=")[1]),
         });
-        // console.log(week, day, hour);
-        // for (let i = 0; i <= parseInt(original_len.split("=")[1]); i++) {
-        //   console.log("we here");
-        //   schedule[parseInt(week.trim())].weekdays[
-        //     parseInt(day.trim())
-        //   ].schedule[parseInt(hour.trim()) + i].task = [];
-        // }
         // Create new record
         saveEvent({
           task: cleanup(task),
