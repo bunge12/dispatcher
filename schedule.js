@@ -59,7 +59,7 @@ const schedule = [
           {
             id: 9,
             task: {
-              job: "Drop off",
+              job: "Dropoff",
               details: "kids",
               location: "Toronto",
               length: 1,
@@ -96,7 +96,7 @@ const schedule = [
           {
             id: 8,
             task: {
-              job: "Pick up",
+              job: "Pickup",
               details: "coffee",
               location: "Ottawa",
               length: 2,
@@ -105,7 +105,7 @@ const schedule = [
           {
             id: 9,
             task: {
-              job: "Pick up",
+              job: "Pickup",
               details: "coffee",
               location: "Ottawa",
               length: 2,
@@ -117,7 +117,7 @@ const schedule = [
           {
             id: 13,
             task: {
-              job: "Pick up",
+              job: "Pickup",
               details: "kids",
               location: "Ottawa",
               length: 3,
@@ -126,7 +126,7 @@ const schedule = [
           {
             id: 14,
             task: {
-              job: "Pick up",
+              job: "Pickup",
               details: "kids",
               location: "Ottawa",
               length: 3,
@@ -135,7 +135,7 @@ const schedule = [
           {
             id: 15,
             task: {
-              job: "Pick up",
+              job: "Pickup",
               details: "kids",
               location: "Ottawa",
               length: 3,
@@ -144,7 +144,7 @@ const schedule = [
           {
             id: 16,
             task: {
-              job: "Drop off",
+              job: "Dropoff",
               details: "stuff",
               location: "Kingston",
               length: 1,
@@ -345,7 +345,7 @@ const schedule = [
           },
           {
             id: 9,
-            task: { job: "Drop off", details: "kids", location: "Toronto" },
+            task: { job: "Dropoff", details: "kids", location: "Toronto" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },
@@ -377,30 +377,30 @@ const schedule = [
           { id: 7, task: [] },
           {
             id: 8,
-            task: { job: "Pick up", details: "coffee", location: "Ottawa" },
+            task: { job: "Pickup", details: "coffee", location: "Ottawa" },
           },
           {
             id: 9,
-            task: { job: "Pick up", details: "coffee", location: "Ottawa" },
+            task: { job: "Pickup", details: "coffee", location: "Ottawa" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },
           { id: 12, task: [] },
           {
             id: 13,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 14,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 15,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 16,
-            task: { job: "Drop off", details: "stuff", location: "Kingston" },
+            task: { job: "Dropoff", details: "stuff", location: "Kingston" },
           },
           { id: 17, task: [] },
           { id: 18, task: [] },
@@ -531,7 +531,7 @@ const schedule = [
           },
           {
             id: 9,
-            task: { job: "Drop off", details: "kids", location: "Toronto" },
+            task: { job: "Dropoff", details: "kids", location: "Toronto" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },
@@ -615,7 +615,7 @@ const schedule = [
           },
           {
             id: 9,
-            task: { job: "Drop off", details: "kids", location: "Toronto" },
+            task: { job: "Dropoff", details: "kids", location: "Toronto" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },
@@ -647,30 +647,30 @@ const schedule = [
           { id: 7, task: [] },
           {
             id: 8,
-            task: { job: "Pick up", details: "coffee", location: "Ottawa" },
+            task: { job: "Pickup", details: "coffee", location: "Ottawa" },
           },
           {
             id: 9,
-            task: { job: "Pick up", details: "coffee", location: "Ottawa" },
+            task: { job: "Pickup", details: "coffee", location: "Ottawa" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },
           { id: 12, task: [] },
           {
             id: 13,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 14,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 15,
-            task: { job: "Pick up", details: "kids", location: "Ottawa" },
+            task: { job: "Pickup", details: "kids", location: "Ottawa" },
           },
           {
             id: 16,
-            task: { job: "Drop off", details: "stuff", location: "Kingston" },
+            task: { job: "Dropoff", details: "stuff", location: "Kingston" },
           },
           { id: 17, task: [] },
           { id: 18, task: [] },
@@ -741,7 +741,7 @@ const schedule = [
           },
           {
             id: 9,
-            task: { job: "Drop off", details: "kids", location: "Toronto" },
+            task: { job: "Dropoff", details: "kids", location: "Toronto" },
           },
           { id: 10, task: [] },
           { id: 11, task: [] },

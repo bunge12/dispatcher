@@ -158,6 +158,21 @@
           });
         } else {
           console.log("editing" + $(this).text(), $(this).attr("id"));
+          $(`#task option`).removeAttr("selected");
+          let hour = parseInt($(this).attr("id").slice(3));
+          let day = $(this).attr("id").slice(1, 2) - 1;
+          $(".date_time").val(`${start}.${day}.${hour}`);
+          $(".datetime").text(`${days[day]} at ${hours[hour]}`);
+          $(".update_form").css("display", "");
+          $("#details").val(
+            schedule[start].weekdays[day].schedule[hour].task.details
+          );
+          $("#location").val(
+            schedule[start].weekdays[day].schedule[hour].task.location
+          );
+          $(
+            `#task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
+          ).attr("selected", "selected");
         }
       });
       $(document.body).on("submit", "#add", function () {
@@ -251,17 +266,16 @@
       <tbody id="records_table"></tbody>
     </table>
     To add a new task, click on an empty cell. To edit existing assignment,
-    click on the cell containing it.
+    click on the cell containing it.<br />
     <div class="new_form" style="display: none;">
-      = Add new task =
       <form action="index.html" id="add" method="POST">
         When: Week <span class="week_num"></span>, <span class="datetime"></span
         ><br />
         Select Task:
         <select name="task" id="task">
           <option value="Pickup">Pickup</option>
-          <option value="Drop off">Drop Off</option>
-          <option value="Others">Others</option> </select
+          <option value="Dropoff">Drop Off</option>
+          <option value="Other">Other</option> </select
         ><br />
         Details: <input type="text" name="details" /><br />
         Location: <input type="text" name="location" /><br />
@@ -270,6 +284,25 @@
         ><br />
         <input type="hidden" class="date_time" name="time" value="" />
         <button type="submit" class="save">Add to schedule</button>
+      </form>
+    </div>
+    <div class="update_form" style="display: none;">
+      <form action="index.html" id="edit" method="POST">
+        When: Week <span class="week_num"></span>, <span class="datetime"></span
+        ><br />
+        Select Task:
+        <select name="task" id="task">
+          <option value="Pickup">Pickup</option>
+          <option value="Dropoff">Drop Off</option>
+          <option value="Other">Other</option> </select
+        ><br />
+        Details: <input type="text" name="details" id="details" /><br />
+        Location: <input type="text" name="location" id="location" /><br />
+        Finish:
+        <select name="length" id="length"> </select
+        ><br />
+        <input type="hidden" class="date_time" name="time" value="" />
+        <button type="submit" class="save">Save update</button>
       </form>
     </div>
     <div class="notification"></div>
