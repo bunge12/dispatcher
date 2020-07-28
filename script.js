@@ -35,3 +35,77 @@ const saveEvent = (eventDetails) => {
 const cleanup = (text) => {
   return text.split("=")[1].trim();
 };
+
+// Downloads a report with day-by-day breakdown of assignments
+const downloadReport = (schedule) => {
+  let dayResults = [];
+  let start = 1;
+  schedule.forEach((week) => {
+    week.weekdays.forEach((day) => {
+      let pickup = 0,
+        dropoff = 0;
+      other = 0;
+      let trackTask = "",
+        trackDetail = "";
+      day.schedule.forEach((hour) => {
+        if (!Array.isArray(hour.task)) {
+          if (trackTask === "" && trackDetail === "") {
+            trackTask = hour.task.job;
+            trackDetail = hour.task.details;
+          }
+          if (trackTask != hour.task.job || trackDetail != hour.task.details) {
+            trackTask === "Pickup"
+              ? pickup++
+              : trackTask === "Dropoff"
+              ? dropoff++
+              : other++;
+            trackTask = hour.task.job;
+            trackDetail = hour.task.details;
+          }
+        } else {
+          trackTask === "Pickup"
+            ? pickup++
+            : trackTask === "Dropoff"
+            ? dropoff++
+            : trackTask === "Other"
+            ? other++
+            : "";
+          trackTask = "";
+          trackDetail = "";
+        }
+      });
+      dayResults.push([start, pickup, dropoff, other]);
+      start++;
+    });
+  });
+  console.log(dayResults);
+  return dayResults;
+};
+
+// Merges the report based on the step provided
+const processReport = (data, step) => {
+  console.log(data.length);
+  let report = [];
+  for (let i = 0; i <= data.length; i += step) {
+    console.log("i", i);
+    let pickup = 0,
+      dropoff = 0,
+      other = 0;
+    let next = i + step;
+    for (let y = i; y < next; y++) {
+      if (data[y]) {
+        pickup += data[y][1];
+        dropoff += data[y][2];
+        other += data[y][3];
+      }
+
+      console.log(y);
+    }
+    report.push(
+      `Day ${i + 1} - ${i + step + 1}, ${pickup}, ${dropoff}, ${other}`
+    );
+  }
+  console.log(report);
+};
+
+processReport(downloadReport(schedule), 4);
