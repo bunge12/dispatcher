@@ -1,3 +1,4 @@
+// Initial Settings
 let person = 0;
 const people = ["Giorgio Sinclair", "Libbie Walton", "Aysha Fountain"];
 let schedule;
@@ -6,7 +7,6 @@ person === 0
   : person === 1
   ? (schedule = list1)
   : (schedule = list2);
-// let schedule = list`${person}`;
 
 // Deletes selected record
 const deleteEvent = (eventDetails) => {
@@ -87,7 +87,6 @@ const processReport = (data, step) => {
   console.log(data.length);
   let report = [];
   for (let i = 0; i <= data.length; i += step) {
-    console.log("i", i);
     let pickup = 0,
       dropoff = 0,
       other = 0;
@@ -98,14 +97,32 @@ const processReport = (data, step) => {
         dropoff += data[y][2];
         other += data[y][3];
       }
-
-      console.log(y);
     }
     report.push(
       `Day ${i + 1} - ${i + step + 1}, ${pickup}, ${dropoff}, ${other}`
     );
   }
-  console.log(report);
+  // console.log(report);
+  return report;
 };
 
-processReport(downloadReport(schedule), 4);
+const reporting = () => {
+  const rows = [
+    ["name1", "city1", "some other info"],
+    ["name2", "city2", "more info"],
+  ];
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+
+  rows.forEach((rowArray) => {
+    let row = rowArray.join(",");
+    csvContent += row + "\r\n";
+  });
+  var encodedUri = encodeURI(csvContent);
+  var link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "my_data.csv");
+  document.body.appendChild(link); // Required for FF
+
+  link.click();
+};
