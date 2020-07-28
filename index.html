@@ -271,11 +271,32 @@
         loadData();
       });
 
-      $(document.body).on("submit", "#delete", function () {
-        event.preventDefault();
-        let form = $(this);
+      $(document.body).on("click", ".delete", function () {
+        console.log("delete clicked");
+        let form = $(this).parent("form");
         let data = form.serialize();
-        console.log(data);
+        let [
+          new_day,
+          new_time,
+          task,
+          details,
+          location,
+          length,
+          original_time,
+          original_len,
+        ] = data.split("&");
+        let [week, day, hour] = original_time.split("=")[1].split(".");
+        // Delete old record
+        deleteEvent({
+          week,
+          day,
+          hour,
+          length: parseInt(original_len.split("=")[1]),
+        });
+        //  Infomr User
+        $(".update_form").css("display", "none").trigger("reset");
+        $(".notification").text("Deleted").addClass("success");
+        loadData();
       });
 
       $(document.body).on("submit", "#edit", function () {
@@ -420,7 +441,7 @@
           value=""
         />
 
-        <button type="submit" class="delete">Delete Entry</button>
+        <button type="button" class="delete">Delete Entry</button>
         <button type="submit" class="save">Save update</button>
       </form>
     </div>
