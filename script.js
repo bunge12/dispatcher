@@ -98,31 +98,25 @@ const processReport = (data, step) => {
         other += data[y][3];
       }
     }
-    report.push(
-      `Day ${i + 1} - ${i + step + 1}, ${pickup}, ${dropoff}, ${other}`
-    );
+    report.push([`Day ${i + 1} - ${i + step + 1}`, pickup, dropoff, other]);
   }
-  // console.log(report);
+  console.log(report);
   return report;
 };
 
-const reporting = () => {
-  const rows = [
-    ["name1", "city1", "some other info"],
-    ["name2", "city2", "more info"],
-  ];
-
+// Merges report into a CSV and downloads it
+const reporting = (schedule, step) => {
+  const rows = processReport(downloadReport(schedule), step);
   let csvContent = "data:text/csv;charset=utf-8,";
-
+  csvContent += "Time-Frame,Pickup,Dropoff,Others\r\n";
   rows.forEach((rowArray) => {
     let row = rowArray.join(",");
     csvContent += row + "\r\n";
   });
-  var encodedUri = encodeURI(csvContent);
-  var link = document.createElement("a");
+  let encodedUri = encodeURI(csvContent);
+  let link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", "my_data.csv");
-  document.body.appendChild(link); // Required for FF
-
+  document.body.appendChild(link);
   link.click();
 };
