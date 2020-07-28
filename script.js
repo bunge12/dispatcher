@@ -1,6 +1,12 @@
 let person = 0;
 const people = ["Giorgio Sinclair", "Libbie Walton", "Aysha Fountain"];
-let schedule = list[0];
+let schedule;
+person === 0
+  ? (schedule = list0)
+  : person === 1
+  ? (schedule = list1)
+  : (schedule = list2);
+// let schedule = list`${person}`;
 
 // Deletes selected record
 const deleteEvent = (eventDetails) => {
@@ -28,32 +34,4 @@ const saveEvent = (eventDetails) => {
 // Cleans up text from a form
 const cleanup = (text) => {
   return text.split("=")[1].trim();
-};
-
-// Generate calendar
-const initialize = () => {
-  let calendar = [];
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  for (let i = 1; i < 53; i++) {
-    let weekdays = [];
-    days.forEach((element, i) => {
-      let hours = [];
-      for (let i = 0; i < 24; i++) {
-        hours.push({ id: i, task: [] });
-      }
-      weekdays.push({ id: i + 1, name: element, schedule: hours });
-    });
-    calendar.push({ id: i, name: `Week ${i}`, days: weekdays });
-    // console.log(weekdays);
-  }
-  console.log(util.inspect(calendar, false, null, true /* enable colors */));
-  return calendar;
 };
