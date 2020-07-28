@@ -8,9 +8,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="schedule.js"></script>
   <script src="time.js"></script>
-  <script src="script.js"></script>
+
   <script>
     $(document).ready(function () {
+      $.each(people, function (index, text) {
+        $("#driver").append($("<option></option>").val(index).html(`${text}`));
+      });
+      $(`#driver option[value='${person}']`).attr("selected", "selected");
+      $(document.body).on("change", "#driver", function () {
+        person = parseInt($(this).val());
+        schedule = list[person];
+        loadData();
+      });
+
       const updateRows = () => {
         var i = 0;
         var $trs = $("#records_table tr");
@@ -261,6 +271,13 @@
         loadData();
       });
 
+      $(document.body).on("submit", "#delete", function () {
+        event.preventDefault();
+        let form = $(this);
+        let data = form.serialize();
+        console.log(data);
+      });
+
       $(document.body).on("submit", "#edit", function () {
         // Receive and destructure data
         event.preventDefault();
@@ -311,7 +328,8 @@
     }
   </style>
   <body>
-    Driver: Good Bob<br />
+    Driver:
+    <select name="driver" id="driver"> </select>
     <button id="prev" disabled>Previous</button> | Week
     <span class="week_num"></span> |
     <button id="next">Next</button>
@@ -402,9 +420,11 @@
           value=""
         />
 
+        <button type="submit" class="delete">Delete Entry</button>
         <button type="submit" class="save">Save update</button>
       </form>
     </div>
     <div class="notification"></div>
+    <script src="script.js"></script>
   </body>
 </html>
