@@ -78,7 +78,6 @@ const downloadReport = (schedule) => {
       start++;
     });
   });
-  console.log(dayResults);
   return dayResults;
 };
 
@@ -100,7 +99,6 @@ const processReport = (data, step) => {
     }
     report.push([`Day ${i + 1} - ${i + step + 1}`, pickup, dropoff, other]);
   }
-  console.log(report);
   return report;
 };
 
@@ -116,7 +114,7 @@ const reporting = (schedule, step) => {
   let encodedUri = encodeURI(csvContent);
   let link = document.createElement("a");
   link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "my_data.csv");
+  link.setAttribute("download", `report_as_of_${new Date()}.csv`);
   document.body.appendChild(link);
   link.click();
 };

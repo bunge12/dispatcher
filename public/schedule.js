@@ -42,6 +42,11 @@ list0[0].weekdays[3].schedule[8].task = {
   details: "hazardous materials",
   location: "Toronto",
 };
+list0[0].weekdays[3].schedule[9].task = {
+  job: "Dropoff",
+  details: "hazardous materials",
+  location: "Toronto",
+};
 list1[0].weekdays[4].schedule[15].task = {
   job: "Pickup",
   details: "products from 2nd",
