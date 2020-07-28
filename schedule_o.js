@@ -312,8 +312,8 @@ const schedule = [
     ],
   },
   {
-    id: 1,
-    name: "Week 1",
+    id: 2,
+    name: "Week 2",
     weekdays: [
       {
         id: 1,
@@ -582,8 +582,8 @@ const schedule = [
     ],
   },
   {
-    id: 1,
-    name: "Week 1",
+    id: 3,
+    name: "Week 3",
     weekdays: [
       {
         id: 1,
@@ -826,17 +826,32 @@ const schedule = [
           { id: 0, task: [] },
           { id: 1, task: [] },
           { id: 2, task: [] },
-          { id: 3, task: [] },
-          { id: 4, task: [] },
-          { id: 5, task: [] },
+          {
+            id: 3,
+            task: { job: "Pickup", details: "food", location: "Toronto" },
+          },
+          {
+            id: 4,
+            task: { job: "Pickup", details: "food", location: "Toronto" },
+          },
+          {
+            id: 5,
+            task: { job: "Pickup", details: "food", location: "Toronto" },
+          },
           { id: 6, task: [] },
           { id: 7, task: [] },
           { id: 8, task: [] },
           { id: 9, task: [] },
           { id: 10, task: [] },
           { id: 11, task: [] },
-          { id: 12, task: [] },
-          { id: 13, task: [] },
+          {
+            id: 12,
+            task: { job: "Pickup", details: "food", location: "Toronto" },
+          },
+          {
+            id: 13,
+            task: { job: "Pickup", details: "food", location: "Toronto" },
+          },
           { id: 14, task: [] },
           { id: 15, task: [] },
           { id: 16, task: [] },
@@ -852,3 +867,77 @@ const schedule = [
     ],
   },
 ];
+
+const downloadReport = (schedule) => {
+  let dayResults = [];
+  let start = 1;
+  schedule.forEach((week) => {
+    week.weekdays.forEach((day) => {
+      let pickup = 0,
+        dropoff = 0;
+      other = 0;
+      let trackTask = "",
+        trackDetail = "";
+      day.schedule.forEach((hour) => {
+        if (!Array.isArray(hour.task)) {
+          if (trackTask === "" && trackDetail === "") {
+            trackTask = hour.task.job;
+            trackDetail = hour.task.details;
+          }
+          if (trackTask != hour.task.job || trackDetail != hour.task.details) {
+            trackTask === "Pickup"
+              ? pickup++
+              : trackTask === "Dropoff"
+              ? dropoff++
+              : other++;
+            trackTask = hour.task.job;
+            trackDetail = hour.task.details;
+          }
+        } else {
+          trackTask === "Pickup"
+            ? pickup++
+            : trackTask === "Dropoff"
+            ? dropoff++
+            : trackTask === "Other"
+            ? other++
+            : "";
+          trackTask = "";
+          trackDetail = "";
+        }
+      });
+      dayResults.push([start, pickup, dropoff, other]);
+      start++;
+    });
+  });
+  console.log(dayResults);
+  return dayResults;
+};
+
+const dataReport = downloadReport(schedule);
+
+const processReport = (data, step) => {
+  console.log(data.length);
+  let report = [];
+  for (let i = 0; i <= data.length; i += step) {
+    console.log("i", i);
+    let pickup = 0,
+      dropoff = 0,
+      other = 0;
+    let next = i + step;
+    for (let y = i; y < next; y++) {
+      if (data[y]) {
+        pickup += data[y][1];
+        dropoff += data[y][2];
+        other += data[y][3];
+      }
+
+      console.log(y);
+    }
+    report.push(
+      `Day ${i + 1} - ${i + step + 1}, ${pickup}, ${dropoff}, ${other}`
+    );
+  }
+  console.log(report);
+};
+
+processReport(dataReport, 4);
