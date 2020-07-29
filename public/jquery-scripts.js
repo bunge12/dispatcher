@@ -53,7 +53,7 @@ $(document).ready(function () {
     response = schedule[start].weekdays;
     $.each(response, function (i, item) {
       let $tr = $(`<tr id='D${item.id}'>`)
-        .append($("<td>").text(item.name))
+        .append($("<th scope='row'>").text(item.name))
         .appendTo("#records_table");
       $.each(item.schedule, function (i, hour) {
         if (Array.isArray(hour.task)) {
@@ -62,9 +62,9 @@ $(document).ready(function () {
           );
         } else {
           $($tr).append(
-            $(`<td class="timeslot" id='D${item.id}H${hour.id}'>`).text(
-              `${hour.task.job} ${hour.task.details}`
-            )
+            $(
+              `<td class="timeslot table-primary"" id='D${item.id}H${hour.id}'>`
+            ).text(`${hour.task.job} ${hour.task.details}`)
           );
         }
       });

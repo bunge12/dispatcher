@@ -18,44 +18,61 @@
 
   <body>
     <div class="container">
-      <select name="driver" id="driver"> </select>
-      <button id="prev" disabled>Previous</button> | Week
-      <span class="week_num"></span> | <button id="next">Next</button>
-      <a href="#" class="report">Download report</a>
+      <div class="row p-3 text-center">
+        <div class="col">
+          <select name="driver" id="driver" class="custom-select col-9">
+          </select>
+        </div>
+        <div class="col">
+          <button id="prev" class="btn btn-outline-secondary btn-sm" disabled>
+            Previous
+          </button>
+          Week <span class="week_num"></span>
+          <button id="next" class="btn btn-outline-secondary btn-sm">
+            Next
+          </button>
+        </div>
+        <div class="col text-center">
+          <span class="align-middle"
+            ><a href="#" class="report">Download report</a></span
+          >
+        </div>
+      </div>
     </div>
-
-    <table>
-      <thead>
-        <tr>
-          <td></td>
-          <td>12am</td>
-          <td>1am</td>
-          <td>2am</td>
-          <td>3am</td>
-          <td>4am</td>
-          <td>5am</td>
-          <td>6am</td>
-          <td>7am</td>
-          <td>8am</td>
-          <td>9am</td>
-          <td>10am</td>
-          <td>11am</td>
-          <td>12pm</td>
-          <td>1pm</td>
-          <td>2pm</td>
-          <td>3pm</td>
-          <td>4pm</td>
-          <td>5pm</td>
-          <td>6pm</td>
-          <td>7pm</td>
-          <td>8pm</td>
-          <td>9pm</td>
-          <td>10pm</td>
-          <td>11pm</td>
-        </tr>
-      </thead>
-      <tbody id="records_table"></tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <td></td>
+            <td>12am</td>
+            <td>1am</td>
+            <td>2am</td>
+            <td>3am</td>
+            <td>4am</td>
+            <td>5am</td>
+            <td>6am</td>
+            <td>7am</td>
+            <td>8am</td>
+            <td>9am</td>
+            <td>10am</td>
+            <td>11am</td>
+            <td>12pm</td>
+            <td>1pm</td>
+            <td>2pm</td>
+            <td>3pm</td>
+            <td>4pm</td>
+            <td>5pm</td>
+            <td>6pm</td>
+            <td>7pm</td>
+            <td>8pm</td>
+            <td>9pm</td>
+            <td>10pm</td>
+            <td>11pm</td>
+          </tr>
+        </thead>
+        <tbody id="records_table"></tbody>
+      </table>
+    </div>
     To add a new task, click on an empty cell. To edit existing assignment,
     click on the cell containing it.<br />
     <div class="new_form" style="display: none;">
