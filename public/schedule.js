@@ -29,8 +29,8 @@ const list2 = initialize();
 
 list0[0].weekdays[0].schedule[0].task = {
   job: "Pickup",
-  details: "products from 1st",
-  location: "Toronto",
+  details: "products from distributor",
+  location: "Montreal",
 };
 list0[0].weekdays[3].schedule[7].task = {
   job: "Dropoff",
@@ -49,11 +49,11 @@ list0[0].weekdays[3].schedule[9].task = {
 };
 list1[0].weekdays[4].schedule[15].task = {
   job: "Pickup",
-  details: "products from 2nd",
-  location: "Toronto",
+  details: "products from supplier",
+  location: "Ottawa",
 };
 list2[0].weekdays[2].schedule[12].task = {
   job: "Pickup",
-  details: "products from 3rd",
-  location: "Toronto",
+  details: "crates from shipping company",
+  location: "Vancouver",
 };

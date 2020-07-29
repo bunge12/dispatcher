@@ -93,7 +93,9 @@ $(document).ready(function () {
           $($tr).append(
             $(
               `<td class="timeslot table-primary"" id='D${item.id}H${hour.id}'>`
-            ).text(`${hour.task.job} ${hour.task.details}`)
+            ).text(
+              `${hour.task.job} ${hour.task.details} (${hour.task.location})`
+            )
           );
         }
       });
@@ -175,15 +177,22 @@ $(document).ready(function () {
             .task
         )
       ) {
-        $(".notification").text("Alert - events clash. ");
+        $(".modal-new-notification")
+          .text(
+            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
+          )
+          .addClass(`alert alert-warning`);
       }
     }
   });
 
-  // Listen to change in "time" for edited event drop-down, repopulate "length" & calculate conflict
-  $(document.body).on("change", "#new_time", function () {
+  // Listen to change in "day" and "time" for edited event drop-down, repopulate "length" & calculate conflict
+  $(document.body).on("change", "#new_day, #new_time", function () {
     $("#length_edit").empty();
-    let remain = hours.slice(parseInt($(this).val()) + 1);
+    let length = $(".original_len").val();
+    let new_day = $("#new_day").val();
+    let new_time = $("#new_time").val();
+    let remain = hours.slice(parseInt(new_time) + 1);
     $.each(remain, function (index, text) {
       $("#length_edit").append(
         $("<option></option>")
@@ -195,10 +204,6 @@ $(document).ready(function () {
       "selected",
       "selected"
     );
-    let length = $(this).val();
-    let new_day = $("#new_day").val();
-    let new_time = $("#new_time").val();
-    console.log(new_day, new_time, length);
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
@@ -206,7 +211,11 @@ $(document).ready(function () {
             .task
         )
       ) {
-        $(".notification").text("Alert - events clash. ");
+        $(".modal-new-notification")
+          .text(
+            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
+          )
+          .addClass(`alert alert-warning`);
       }
     }
   });
@@ -313,8 +322,9 @@ $(document).ready(function () {
   // Deleting an entry
   $(document.body).on("click", ".delete", function () {
     console.log("delete clicked");
-    let form = $(this).parent("form");
+    let form = $("#edit");
     let data = form.serialize();
+    console.log($(this));
     let [
       new_day,
       new_time,
@@ -334,7 +344,8 @@ $(document).ready(function () {
       length: parseInt(original_len.split("=")[1]),
     });
     //  Inform User, Reset form and Reload Data
-    $(".update_form").css("display", "none").trigger("reset");
+    $("#editModal").modal("hide");
+    $("#edit").trigger("reset");
     notify("Entry Successfully Deleted!", "success");
     loadData();
   });
@@ -374,11 +385,13 @@ $(document).ready(function () {
       hour: cleanup(new_time),
     });
     // Hide & reset form, show feedback, reload data
-    $(".update_form").css("display", "none").trigger("reset");
-    $(".notification").text("Edited").addClass("success");
+    $("#editModal").modal("hide");
+    $("#edit").trigger("reset");
+    notify("Task Edited Successfully!", "success");
     loadData();
   });
 
+  // Pass the step/division selection to the reporting function
   $(document.body).on("click", ".report", function () {
     event.preventDefault();
     const step = parseInt($("#division").val());
