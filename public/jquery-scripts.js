@@ -143,7 +143,7 @@ $(document).ready(function () {
 
   // Listen to change in "length" drop-down and check if event overlaps
   $(document.body).on("change", "#length", function () {
-    $(".notification").empty();
+    $(".modal-new-notification").empty().removeClass("alert alert-danger");
     let length = $(this).val();
     let [week, day, hour] = $(".date_time").val().split(".");
     for (let i = 0; i <= length; i++) {
@@ -156,7 +156,7 @@ $(document).ready(function () {
           .text(
             "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
           )
-          .addClass(`alert alert-danger`);
+          .addClass(`alert alert-warning`);
       }
     }
   });
@@ -213,35 +213,33 @@ $(document).ready(function () {
 
   // Listen to clicks on a timeslot, show new/edit form
   $(document.body).on("click", ".timeslot", function () {
-    $("#newModal").modal("show");
     $(".notification").empty();
     if ($(this).text() === "") {
+      // Show "new task" modal and populate time
+      $("#newModal").modal("show");
       let hour = parseInt($(this).attr("id").slice(3));
       let day = $(this).attr("id").slice(1, 2) - 1;
-      $(".new_form").css("display", "");
-      $(".update_form").css("display", "none");
       $(".date_time").val(`${start}.${day}.${hour}`);
       $(".datetime").text(`${days[day]} at ${hours[hour]}`);
-      $("#length").empty();
+      // Populate "length" drop-down
       let remain = hours.slice(hour + 1);
+      $("#length").empty();
       $.each(remain, function (index, text) {
         $("#length").append(
           $("<option></option>")
             .val(index)
-            .html(`${text} (${index + 1} hour)`)
+            .html(`${text} (${index + 1} ${index === 0 ? "hour" : "hours"})`)
         );
       });
     } else {
-      console.log("editing" + $(this).text(), $(this).attr("id"));
+      $("#editModal").modal("show");
       $(`#task option`).removeAttr("selected");
       let hour = parseInt($(this).attr("id").slice(3));
-      // console.log();
       let day = $(this).attr("id").slice(1, 2) - 1;
       $(".date_time_original").val(`${start}.${day}.${hour}`);
       $(".date_time").val(`${start}.${day}.${hour}`);
       $(".datetime").text(`${days[day]} at ${hours[hour]}`);
-      $(".update_form").css("display", "");
-      $(".new_form").css("display", "none");
+
       $("#details").val(
         schedule[start].weekdays[day].schedule[hour].task.details
       );
@@ -306,7 +304,8 @@ $(document).ready(function () {
       hour: hour,
     });
     // Clear & reset the form, show feedback
-    $(".new_form").css("display", "none").trigger("reset");
+    $("#newModal").modal("hide");
+    $("#add").trigger("reset");
     notify("Entry Successfully Added!", "success");
     loadData();
   });

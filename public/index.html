@@ -236,22 +236,47 @@
           </div>
           <div class="modal-body">
             <form action="index.html" id="add" method="POST">
-              When: Week <span class="week_num"></span>,
-              <span class="datetime"></span><br />
-              Select Task:
-              <select name="task" id="task">
-                <option value="Pickup">Pickup</option>
-                <option value="Dropoff">Drop Off</option>
-                <option value="Other">Other</option> </select
-              ><br />
-              Details: <input type="text" name="details" /><br />
-              Location: <input type="text" name="location" /><br />
-              Finish:
-              <select name="length" id="length"> </select
-              ><br />
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">
+                  When:</label>
+                <div class="col-sm-9">
+                  Week <span class="week_num"></span>,
+              <span class="datetime"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="task">Select Task:</label>
+                <div class="col-sm-9">
+                  <select name="task" id="task" class="custom-select">
+                    <option value="Pickup">Pickup</option>
+                    <option value="Dropoff">Drop Off</option>
+                    <option value="Other">Other</option> </select
+                  >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="details">Details:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="details" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="location">Location:</label>
+                <div class="col-sm-9">
+                  <input type="text" name="location" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="length">End time:</label>
+                <div class="col-sm-9">
+                  <select name="length" id="length" class="custom-select"> </select
+                    >
+                </div>
+              </div>
+      
               <input type="hidden" class="date_time" name="time" value="" />
-              <button type="submit" class="save">Add to schedule</button>
-            </form>
+              <!-- <button type="submit" class="save">Add to schedule</button> -->
+            
             <div class="modal-new-notification mt-3"></div>
           </div>
           <div class="modal-footer">
@@ -262,7 +287,10 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary save">
+              Add to schedule
+            </button>
+          </form>
           </div>
         </div>
       </div>
