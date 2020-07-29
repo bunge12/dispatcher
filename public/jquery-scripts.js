@@ -3,6 +3,28 @@ $(document).ready(function () {
   let start = 0;
   $(".week_num").text(start + 1);
 
+  // Populate new driver dropdown
+  $.each(people, function (index, text) {
+    $(".dropdown-menu").append(
+      $("<a class='dropdown-item' href='#'></a>")
+        .attr("data-id", index)
+        .html(`${text}`)
+    );
+  });
+  $(".driver-name").text(people[person]);
+  $(document.body).on("click", ".dropdown-item", function () {
+    person = parseInt($(this).attr("data-id"));
+    person === 0
+      ? (schedule = list0)
+      : person === 1
+      ? (schedule = list1)
+      : (schedule = list2);
+    $(".driver-name").text($(this).text());
+    loadData();
+    console.log($(this).text(), $(this).attr("data-id"));
+  });
+
+  // Populate driver "select"
   $.each(people, function (index, text) {
     $("#driver").append($("<option></option>").val(index).html(`${text}`));
   });
