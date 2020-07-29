@@ -33,118 +33,125 @@
 
   <body>
     <nav class="navbar navbar-light bg-light navbar-expand-sm py-3">
-      <span class="navbar-brand mb-0 h1">Dispatcher</span>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav align-middle">
-          <li class="nav-item mx-1">
-            <div class="btn-group">
-              <button
-                type="button"
-                class="btn btn-outline-dark driver-name"
-              ></button>
-              <button
-                type="button"
-                class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <div class="dropdown-menu"></div>
-            </div>
-          </li>
-          <!-- <li class="nav-item mx-1">
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">Dispatcher</span>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav align-middle">
+            <li class="nav-item mx-1">
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn btn-outline-dark driver-name"
+                ></button>
+                <button
+                  type="button"
+                  class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu"></div>
+              </div>
+            </li>
+            <!-- <li class="nav-item mx-1">
             <select name="driver" id="driver" class="custom-select"> </select>
           </li> -->
-          <li class="nav-item align-middle mx-1">
-            <span>
-              <button id="prev" class="btn btn-outline-dark" disabled>
-                <
-              </button>
-              Week <span class="week_num"></span>
-              <button id="next" class="btn btn-outline-dark">
+            <li class="nav-item mx-1">
+              <div class="btn-group" role="group" aria-label="Week switcher">
+                <button
+                  type="button"
+                  id="prev"
+                  disabled
+                  class="btn btn-outline-dark"
                 >
-              </button></span
-            >
-          </li>
-          <li class="nav-item mx-1">
-            <a
-              class="btn btn-outline-dark"
-              data-toggle="collapse"
-              href="#collapseExample"
-              role="button"
-              aria-expanded="false"
-              aria-controls="collapseExample"
-            >
-              Download Report
-            </a>
-          </li>
-        </ul>
+                  &#60;
+                </button>
+                <button type="button" class="btn btn-outline-dark">
+                  Week <span class="week_num"></span>
+                </button>
+                <button type="button" id="next" class="btn btn-outline-dark">
+                  &#62;
+                </button>
+              </div>
+            </li>
+
+            <li class="nav-item mx-1">
+              <a
+                class="btn btn-outline-dark"
+                data-toggle="collapse"
+                href="#reportCard"
+                role="button"
+                aria-expanded="false"
+                aria-controls="reportCard"
+              >
+                Download Report
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        <a href="#" class="report">Download report</a>
+    <div class="collapse" id="reportCard">
+      <div class="card card-body col-9 mx-auto mt-3">
+        <form class="form-inline">
+          <label class="my-1 mr-2" for="division">Select Division: </label>
+          <select name="division" id="division" class="custom-select col-2">
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="7">7</option>
+            <option value="14">14</option>
+            <option value="28">28</option>
+          </select>
+          <button
+            type="submit"
+            class="btn btn-outline-primary my-1 ml-2 report"
+          >
+            Download Report
+          </button>
+        </form>
       </div>
     </div>
 
-    <div class="table-responsive mt-4">
+    <div class="table-responsive mt-4 col">
       <table class="table table-striped table-bordered table-sm">
-        <thead class="thead-dark">
+        <thead class="thead-light">
           <tr>
-            <td></td>
-            <td>12am</td>
-            <td>1am</td>
-            <td>2am</td>
-            <td>3am</td>
-            <td>4am</td>
-            <td>5am</td>
-            <td>6am</td>
-            <td>7am</td>
-            <td>8am</td>
-            <td>9am</td>
-            <td>10am</td>
-            <td>11am</td>
-            <td>12pm</td>
-            <td>1pm</td>
-            <td>2pm</td>
-            <td>3pm</td>
-            <td>4pm</td>
-            <td>5pm</td>
-            <td>6pm</td>
-            <td>7pm</td>
-            <td>8pm</td>
-            <td>9pm</td>
-            <td>10pm</td>
-            <td>11pm</td>
+            <th scope="col"></th>
+            <th scope="col">12am</th>
+            <th scope="col">1am</th>
+            <th scope="col">2am</th>
+            <th scope="col">3am</th>
+            <th scope="col">4am</th>
+            <th scope="col">5am</th>
+            <th scope="col">6am</th>
+            <th scope="col">7am</th>
+            <th scope="col">8am</th>
+            <th scope="col">9am</th>
+            <th scope="col">10am</th>
+            <th scope="col">11am</th>
+            <th scope="col">12pm</th>
+            <th scope="col">1pm</th>
+            <th scope="col">2pm</th>
+            <th scope="col">3pm</th>
+            <th scope="col">4pm</th>
+            <th scope="col">5pm</th>
+            <th scope="col">6pm</th>
+            <th scope="col">7pm</th>
+            <th scope="col">8pm</th>
+            <th scope="col">9pm</th>
+            <th scope="col">10pm</th>
+            <th scope="col">11pm</th>
           </tr>
         </thead>
         <tbody id="records_table"></tbody>
       </table>
     </div>
-    To add a new task, click on an empty cell. To edit existing assignment,
-    click on the cell containing it.<br />
-    <div class="new_form" style="display: none;">
-      Add
-      <form action="index.html" id="add" method="POST">
-        When: Week <span class="week_num"></span>, <span class="datetime"></span
-        ><br />
-        Select Task:
-        <select name="task" id="task">
-          <option value="Pickup">Pickup</option>
-          <option value="Dropoff">Drop Off</option>
-          <option value="Other">Other</option> </select
-        ><br />
-        Details: <input type="text" name="details" /><br />
-        Location: <input type="text" name="location" /><br />
-        Finish:
-        <select name="length" id="length"> </select
-        ><br />
-        <input type="hidden" class="date_time" name="time" value="" />
-        <button type="submit" class="save">Add to schedule</button>
-      </form>
-    </div>
+
     <div class="update_form" style="display: none;">
       Edit
       <form action="index.html" id="edit" method="POST">
@@ -182,7 +189,84 @@
         <button type="submit" class="save">Save update</button>
       </form>
     </div>
-    <div class="notification"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-9 mx-auto">
+          <div class="notification"></div>
+          <div
+            class="alert alert-info alert-dismissible fade hide notif-welcome"
+            role="alert"
+          >
+            <strong>Welcome to Dispatcher!</strong> To add a new task, click on
+            an empty cell. To edit existing assignment, click on the cell
+            containing it.
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New Modal -->
+    <div
+      class="modal fade"
+      id="newModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="newModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newModalLabel">Add New Task</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="index.html" id="add" method="POST">
+              When: Week <span class="week_num"></span>,
+              <span class="datetime"></span><br />
+              Select Task:
+              <select name="task" id="task">
+                <option value="Pickup">Pickup</option>
+                <option value="Dropoff">Drop Off</option>
+                <option value="Other">Other</option> </select
+              ><br />
+              Details: <input type="text" name="details" /><br />
+              Location: <input type="text" name="location" /><br />
+              Finish:
+              <select name="length" id="length"> </select
+              ><br />
+              <input type="hidden" class="date_time" name="time" value="" />
+              <button type="submit" class="save">Add to schedule</button>
+            </form>
+            <div class="modal-new-notification mt-3"></div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

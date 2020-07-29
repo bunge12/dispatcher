@@ -39,6 +39,13 @@ $(document).ready(function () {
     loadData();
   });
 
+  const notify = (message, status) => {
+    $(".notification").text(message).addClass(`alert alert-${status}`).show();
+    setTimeout(() => {
+      $(".notification").hide();
+    }, 2500);
+  };
+
   const updateRows = () => {
     var i = 0;
     var $trs = $("#records_table tr");
@@ -139,14 +146,17 @@ $(document).ready(function () {
     $(".notification").empty();
     let length = $(this).val();
     let [week, day, hour] = $(".date_time").val().split(".");
-    console.log(week, day, hour, length);
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
           schedule[week].weekdays[day].schedule[parseInt(hour) + i].task
         )
       ) {
-        $(".notification").text("Alert - events clash. ");
+        $(".modal-new-notification")
+          .text(
+            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
+          )
+          .addClass(`alert alert-danger`);
       }
     }
   });
@@ -203,6 +213,7 @@ $(document).ready(function () {
 
   // Listen to clicks on a timeslot, show new/edit form
   $(document.body).on("click", ".timeslot", function () {
+    $("#newModal").modal("show");
     $(".notification").empty();
     if ($(this).text() === "") {
       let hour = parseInt($(this).attr("id").slice(3));
@@ -296,7 +307,7 @@ $(document).ready(function () {
     });
     // Clear & reset the form, show feedback
     $(".new_form").css("display", "none").trigger("reset");
-    $(".notification").text("Added!. ");
+    notify("Entry Successfully Added!", "success");
     loadData();
   });
 
@@ -323,9 +334,9 @@ $(document).ready(function () {
       hour,
       length: parseInt(original_len.split("=")[1]),
     });
-    //  Infomr User
+    //  Inform User, Reset form and Reload Data
     $(".update_form").css("display", "none").trigger("reset");
-    $(".notification").text("Deleted").addClass("success");
+    notify("Entry Successfully Deleted!", "success");
     loadData();
   });
 
@@ -370,8 +381,9 @@ $(document).ready(function () {
   });
 
   $(document.body).on("click", ".report", function () {
-    console.log("clicked");
-    reporting(schedule, 7);
+    event.preventDefault();
+    const step = parseInt($("#division").val());
+    reporting(schedule, step);
   });
 
   loadData();
