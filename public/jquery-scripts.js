@@ -145,14 +145,20 @@ $(document).ready(function () {
 
   // Listen to change in "length" drop-down and check if event overlaps
   $(document.body).on("change", "#length", function () {
-    $(".modal-new-notification").empty().removeClass("alert alert-danger");
+    $(".modal-new-notification").empty().removeClass("alert alert-warning");
     let length = $(this).val();
     let [week, day, hour] = $(".date_time").val().split(".");
+    let task = $("#task").val();
+    let details = $("#details").val();
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
           schedule[week].weekdays[day].schedule[parseInt(hour) + i].task
-        )
+        ) &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .job != task &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .details != details
       ) {
         $(".modal-new-notification")
           .text(
@@ -165,17 +171,23 @@ $(document).ready(function () {
 
   // Listen to change in "length" drop-down and check if event overlaps
   $(document.body).on("change", "#length_edit", function () {
-    $(".notification").empty();
+    $(".modal-new-notification").empty().removeClass(`alert alert-warning`);
     let length = $(this).val();
     let new_day = $("#new_day").val();
     let new_time = $("#new_time").val();
+    let task = $("#task").val();
+    let details = $("#details").val();
     console.log(new_day, new_time, length);
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
           schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
             .task
-        )
+        ) &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .job != task &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .details != details
       ) {
         $(".modal-new-notification")
           .text(
@@ -188,10 +200,14 @@ $(document).ready(function () {
 
   // Listen to change in "day" and "time" for edited event drop-down, repopulate "length" & calculate conflict
   $(document.body).on("change", "#new_day, #new_time", function () {
+    $(".modal-new-notification").empty().removeClass(`alert alert-warning`);
     $("#length_edit").empty();
     let length = $(".original_len").val();
     let new_day = $("#new_day").val();
     let new_time = $("#new_time").val();
+    let task = $("#task").val();
+    let details = $("#details").val();
+    console.log(task, details);
     let remain = hours.slice(parseInt(new_time) + 1);
     $.each(remain, function (index, text) {
       $("#length_edit").append(
@@ -209,7 +225,11 @@ $(document).ready(function () {
         !Array.isArray(
           schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
             .task
-        )
+        ) &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .job != task &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .details != details
       ) {
         $(".modal-new-notification")
           .text(
@@ -222,7 +242,7 @@ $(document).ready(function () {
 
   // Listen to clicks on a timeslot, show new/edit form
   $(document.body).on("click", ".timeslot", function () {
-    $(".notification").empty();
+    $(".modal-new-notification").empty().removeClass(`alert alert-warning`);
     if ($(this).text() === "") {
       // Show "new task" modal and populate time
       $("#newModal").modal("show");

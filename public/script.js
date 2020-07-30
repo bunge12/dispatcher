@@ -26,7 +26,7 @@ const saveEvent = (eventDetails) => {
     ].task = {
       job: task,
       details: details.replace(/%20/g, " "),
-      location: location,
+      location: location.replace(/%20/g, " "),
     };
   }
 };
