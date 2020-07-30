@@ -40,7 +40,7 @@
       <div class="container">
         <span class="navbar-brand mb-0 h1">Dispatcher</span>
         <div
-          class="collapse navbar-collapse justify-content-end"
+          class=" justify-content-end"
           id="navbarNav"
         >
           <ul class="navbar-nav align-middle">
@@ -255,7 +255,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-outline-secondary"
               data-dismiss="modal"
             >
               Close
@@ -335,13 +335,6 @@
                       >
                   </div>
                 </div>
-
-
-               
-               
-                <!-- Finish:
-                <select name="length" id="length_edit"> </select
-                ><br /> -->
         
                 <input
                   type="hidden"
@@ -363,14 +356,27 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-outline-secondary"
                 data-dismiss="modal"
               >
                 Close
               </button>
-              <button type="button" class="btn btn-danger delete">Delete Entry</button>
-              <button type="submit" class="btn btn-primary save">Save Update</button>
-            </form>
+              <a
+              class="btn btn-outline-danger"
+              data-toggle="collapse"
+              href="#deleteConfirm"
+              role="button"
+              aria-expanded="false"
+              aria-controls="deleteConfirm"
+            >
+              Delete Task 
+            </a>
+            <button type="submit" class="btn btn-primary save">Save Update</button>
+          </form>
+          <div class="collapse" id="deleteConfirm">
+            Are you sure? This action can not be reversed!
+            <button type="button" class="btn btn-danger delete">Delete Entry</button>
+            </div>
             </div>
           </div>
         </div>
