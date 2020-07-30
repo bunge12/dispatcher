@@ -33,4 +33,5 @@ const hours = [
   "9PM",
   "10PM",
   "11PM",
+  "12AM",
 ];

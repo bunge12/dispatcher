@@ -154,11 +154,7 @@ $(document).ready(function () {
       if (
         !Array.isArray(
           schedule[week].weekdays[day].schedule[parseInt(hour) + i].task
-        ) &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .job != task &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .details != details
+        )
       ) {
         $(".modal-new-notification")
           .text(

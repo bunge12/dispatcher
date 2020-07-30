@@ -97,7 +97,7 @@ const processReport = (data, step) => {
         other += data[y][3];
       }
     }
-    report.push([`Day ${i + 1} - ${i + step + 1}`, pickup, dropoff, other]);
+    report.push([`Day ${i + 1} - Day ${i + step + 1}`, pickup, dropoff, other]);
   }
   return report;
 };
@@ -106,7 +106,7 @@ const processReport = (data, step) => {
 const reporting = (schedule, step) => {
   const rows = processReport(downloadReport(schedule), step);
   let csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "Time-Frame,Pickup,Dropoff,Others\r\n";
+  csvContent += "Time-Frame,Pickup,Dropoff,Other\r\n";
   rows.forEach((rowArray) => {
     let row = rowArray.join(",");
     csvContent += row + "\r\n";
