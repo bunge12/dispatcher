@@ -2,6 +2,11 @@ $(document).ready(function () {
   // Initial Settings
   let start = 0;
   $(".week_num").text(start + 1);
+  // $.ajax(`/key`, { method: "GET" }).then(function (data) {
+  //   var bytes = CryptoJS.AES.decrypt(data, "QzIce7FdJs1^");
+  //   var originalText = bytes.toString(CryptoJS.enc.Utf8);
+  //   console.log(originalText);
+  // });
 
   // Populate new driver dropdown
   $.each(people, function (index, text) {
@@ -429,7 +434,32 @@ $(document).ready(function () {
     }
   });
 
-  //
+  // Make a call to Google Maps
+  const callGmaps = () => {
+    $(".autocomplete-items").empty();
+    let val = $("#gmaps").val();
+    console.log(val);
+    $.ajax({
+      type: "POST",
+      url: "/maps",
+      data: { query: val },
+      success: function (msg) {
+        $.each(msg, function (index, text) {
+          $(".autocomplete-items").append(
+            $("<div class='suggestion'></div>").html(`${text}`)
+          );
+        });
+      },
+    });
+  };
+
+  $(document.body).on("click", ".suggestion", function () {
+    // console.log($(this).text());
+    $("#gmaps").val($(this).text());
+    $(".autocomplete-items").empty();
+  });
+  // Bind debounce to #gmaps and listen to keyup
+  $("#gmaps").keyup($.debounce(250, callGmaps));
 
   loadData();
 });
