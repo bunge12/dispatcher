@@ -206,7 +206,7 @@ $(document).ready(function () {
     let new_time = $("#new_time").val();
     let task = $(".task").val();
     let details = $("#details").val();
-    console.log(task, details);
+    // console.log(task, details);
     let remain = hours.slice(parseInt(new_time) + 1);
     $.each(remain, function (index, text) {
       $("#length_edit").append(
@@ -221,12 +221,11 @@ $(document).ready(function () {
         !Array.isArray(
           schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
             .task
-        )
-        // &&
-        // schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-        //   .job != task &&
-        // schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-        //   .details != details
+        ) &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .job != task &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .details != details
       ) {
         $(".modal-new-notification")
           .text(
@@ -341,7 +340,6 @@ $(document).ready(function () {
     console.log("delete clicked");
     let form = $("#edit");
     let data = form.serialize();
-    console.log($(this));
     let [
       new_day,
       new_time,
