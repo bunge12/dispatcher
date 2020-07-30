@@ -2,11 +2,6 @@ $(document).ready(function () {
   // Initial Settings
   let start = 0;
   $(".week_num").text(start + 1);
-  // $.ajax(`/key`, { method: "GET" }).then(function (data) {
-  //   var bytes = CryptoJS.AES.decrypt(data, "QzIce7FdJs1^");
-  //   var originalText = bytes.toString(CryptoJS.enc.Utf8);
-  //   console.log(originalText);
-  // });
 
   // Populate new driver dropdown
   $.each(people, function (index, text) {
@@ -26,38 +21,47 @@ $(document).ready(function () {
       : (schedule = list2);
     $(".driver-name").text($(this).text());
     loadData();
-    console.log($(this).text(), $(this).attr("data-id"));
   });
 
-  // Populate driver "select"
-  $.each(people, function (index, text) {
-    $("#driver").append($("<option></option>").val(index).html(`${text}`));
-  });
-  $(`#driver option[value='${person}']`).attr("selected", "selected");
-  $(document.body).on("change", "#driver", function () {
-    person = parseInt($(this).val());
-    person === 0
-      ? (schedule = list0)
-      : person === 1
-      ? (schedule = list1)
-      : (schedule = list2);
-    loadData();
-  });
-
+  // Sends a 3 second disappearing notification
   const notify = (message, status) => {
     $(".notification").text(message).addClass(`alert alert-${status}`).show();
     setTimeout(() => {
       $(".notification").hide();
-    }, 2500);
+    }, 3000);
   };
 
+  // Calculates conflict with other events, exclude conflict with self
+  const calculateConflict = (data) => {
+    const { length, start, new_day, new_time, task, details } = data;
+    for (let i = 0; i <= length; i++) {
+      if (
+        !Array.isArray(
+          schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
+            .task
+        ) &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .job != task &&
+        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+          .details != details
+      ) {
+        $(".modal-new-notification")
+          .text(
+            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
+          )
+          .addClass(`alert alert-warning`);
+      }
+    }
+  };
+
+  // Merges neighbouring cells with same task
   const updateRows = () => {
-    var i = 0;
-    var $trs = $("#records_table tr");
+    let i = 0;
+    let $trs = $("#records_table tr");
     $trs.each(function () {
-      var $tds = $(this).find("td");
-      var width = $tds.length;
-      var num = 2;
+      let $tds = $(this).find("td");
+      let width = $tds.length;
+      let num = 2;
       for (i = width - 2; i >= 0; i--) {
         if (
           $($tds[i]).html() == $($tds[i + 1]).html() &&
@@ -82,6 +86,7 @@ $(document).ready(function () {
     });
   };
 
+  // Loads data from schedule file
   const loadData = () => {
     $("#records_table").empty();
     response = schedule[start].weekdays;
@@ -97,7 +102,7 @@ $(document).ready(function () {
         } else {
           $($tr).append(
             $(
-              `<td class="timeslot table-primary"" id='D${item.id}H${hour.id}'>`
+              `<td class="timeslot table-primary" id='D${item.id}H${hour.id}'>`
             ).text(
               `${hour.task.job} ${hour.task.details} (${hour.task.location})`
             )
@@ -116,15 +121,6 @@ $(document).ready(function () {
       $(this).attr("disabled", "disabled");
     }
     $(".week_num").text(start + 1);
-    $(".new_form").css("display", "none");
-    $(".update_form").css("display", "none");
-    $(".notification").empty();
-    $("#add").each(function () {
-      this.reset();
-    });
-    $("#edit").each(function () {
-      this.reset();
-    });
     loadData();
   });
 
@@ -136,15 +132,6 @@ $(document).ready(function () {
     if (start === 0) {
       $(this).attr("disabled", "disabled");
     }
-    $(".new_form").css("display", "none");
-    $(".update_form").css("display", "none");
-    $(".notification").empty();
-    $("#add").each(function () {
-      this.reset();
-    });
-    $("#edit").each(function () {
-      this.reset();
-    });
     loadData();
   });
 
@@ -176,25 +163,7 @@ $(document).ready(function () {
     let new_time = $("#new_time").val();
     let task = $(".task").val();
     let details = $("#details").val();
-    console.log(new_day, new_time, length);
-    for (let i = 0; i <= length; i++) {
-      if (
-        !Array.isArray(
-          schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
-            .task
-        ) &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .job != task &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .details != details
-      ) {
-        $(".modal-new-notification")
-          .text(
-            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
-          )
-          .addClass(`alert alert-warning`);
-      }
-    }
+    calculateConflict({ length, start, new_day, new_time, task, details });
   });
 
   // Listen to change in "day" and "time" for edited event drop-down, repopulate "length" & calculate conflict
@@ -206,7 +175,6 @@ $(document).ready(function () {
     let new_time = $("#new_time").val();
     let task = $(".task").val();
     let details = $("#details").val();
-    // console.log(task, details);
     let remain = hours.slice(parseInt(new_time) + 1);
     $.each(remain, function (index, text) {
       $("#length_edit").append(
@@ -216,24 +184,7 @@ $(document).ready(function () {
       );
     });
     $(`#length_edit option[value='${length}']`).attr("selected", "selected");
-    for (let i = 0; i <= length; i++) {
-      if (
-        !Array.isArray(
-          schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
-            .task
-        ) &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .job != task &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .details != details
-      ) {
-        $(".modal-new-notification")
-          .text(
-            "Warning - this task conflicts with the next scheduled event. Saving this will overwrite the next task."
-          )
-          .addClass(`alert alert-warning`);
-      }
-    }
+    calculateConflict({ length, start, new_day, new_time, task, details });
   });
 
   // Listen to clicks on a timeslot, show new/edit form
@@ -257,6 +208,7 @@ $(document).ready(function () {
         );
       });
     } else {
+      // Show "edit" modal, populate time and other fields
       $("#editModal").modal("show");
       $(`.task option`).removeAttr("selected");
       let hour = parseInt($(this).attr("id").slice(3));
@@ -264,7 +216,6 @@ $(document).ready(function () {
       $(".date_time_original").val(`${start}.${day}.${hour}`);
       $(".date_time").val(`${start}.${day}.${hour}`);
       $(".datetime").text(`${days[day]} at ${hours[hour]}`);
-
       $("#details").val(
         schedule[start].weekdays[day].schedule[hour].task.details
       );
@@ -290,7 +241,7 @@ $(document).ready(function () {
         $("#length_edit").append(
           $("<option></option>")
             .val(index)
-            .html(`${text} (${index + 1} hour)`)
+            .html(`${text} (${index + 1} ${index === 0 ? "hour" : "hours"})`)
         );
       });
       let valueOfColspan = $(this).attr("colspan");
@@ -299,7 +250,6 @@ $(document).ready(function () {
       } else {
         $(".original_len").val($(this).attr("colspan") - 1);
       }
-
       $(
         `.task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
       ).attr("selected", "selected");
@@ -337,7 +287,6 @@ $(document).ready(function () {
 
   // Deleting an entry
   $(document.body).on("click", ".delete", function () {
-    console.log("delete clicked");
     let form = $("#edit");
     let data = form.serialize();
     let [
@@ -416,14 +365,12 @@ $(document).ready(function () {
   // Listen to dark mode changes
   $(document.body).on("change", "#darkMode", function () {
     if (this.checked) {
-      // $(".dm-label").text("☀️");
       DarkReader.enable({
         brightness: 100,
         contrast: 90,
         sepia: 10,
       });
     } else {
-      // $(".dm-label").text("🌑");
       DarkReader.disable();
     }
   });
@@ -433,7 +380,6 @@ $(document).ready(function () {
     $(".autocomplete-items").empty();
     let val = $(".gmaps").val();
     val === "" ? (val = $("#location").val()) : "";
-    console.log(val);
     $.ajax({
       type: "POST",
       url: "/maps",
@@ -448,12 +394,13 @@ $(document).ready(function () {
     });
   };
 
+  // Populate location with selected suggestion
   $(document.body).on("click", ".suggestion", function () {
-    // console.log($(this).text());
     $(".gmaps").val($(this).text());
     $(".autocomplete-items").empty();
   });
-  // Bind debounce to #gmaps and listen to keyup
+
+  // Bind debounce to gmaps and listen to keyup
   $(".gmaps").keyup($.debounce(250, callGmaps));
 
   $("#newModal, #editModal").on("hidden.bs.modal", function (e) {
