@@ -435,9 +435,10 @@ $(document).ready(function () {
   });
 
   // Make a call to Google Maps
-  const callGmaps = () => {
+  const callGmaps = (event) => {
     $(".autocomplete-items").empty();
-    let val = $("#gmaps").val();
+    let val = $(".gmaps").val();
+    val === "" ? (val = $("#location").val()) : "";
     console.log(val);
     $.ajax({
       type: "POST",
@@ -455,11 +456,16 @@ $(document).ready(function () {
 
   $(document.body).on("click", ".suggestion", function () {
     // console.log($(this).text());
-    $("#gmaps").val($(this).text());
+    $(".gmaps").val($(this).text());
     $(".autocomplete-items").empty();
   });
   // Bind debounce to #gmaps and listen to keyup
-  $("#gmaps").keyup($.debounce(250, callGmaps));
+  $(".gmaps").keyup($.debounce(250, callGmaps));
+
+  $("#newModal, #editModal").on("hidden.bs.modal", function (e) {
+    $("#add").trigger("reset");
+    $("#edit").trigger("reset");
+  });
 
   loadData();
 });

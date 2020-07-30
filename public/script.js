@@ -25,8 +25,8 @@ const saveEvent = (eventDetails) => {
       parseInt(hour) + i
     ].task = {
       job: task,
-      details: details.replace(/%20/g, " "),
-      location: location.replace(/%20/g, " "),
+      details: decodeURIComponent(details),
+      location: decodeURIComponent(location),
     };
   }
 };
