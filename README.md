@@ -26,6 +26,6 @@ This project was created as a part of Rose Rocket coding challenge.
 
 > **NOTE 1:** The app will work with or without the API key (autocomplete feature will not work). If you don't want to set up an API key, move to step 4. If you want to set up an API key on your machine, see API Instructions below.
 
-> **NOTE 2:** To see a working version of the autocomplete feature, please go to the [hosted version](https://dispatcher-jq.herokuapp.com/) of the app.
+> **NOTE 2:** To see a working version of the autocomplete feature _without_ API key, please go to the [hosted version](https://dispatcher-jq.herokuapp.com/) of the app.
 
 > **API Instructions:** The location autocomplete feature uses [Google Place API](https://developers.google.com/places/web-service/autocomplete), and thus requires an API key. If you have a key, place it in a `.env` file in the root folder (as shown in `.env.example` file). If you don't have a key, you can obtain one [here](https://developers.google.com/places/web-service/get-api-key).
