@@ -414,5 +414,22 @@ $(document).ready(function () {
     reporting(schedule, step);
   });
 
+  // Listen to dark mode changes
+  $(document.body).on("change", "#darkMode", function () {
+    if (this.checked) {
+      console.log("checked");
+      DarkReader.enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10,
+      });
+    } else {
+      console.log("unchecked");
+      DarkReader.disable();
+    }
+  });
+
+  //
+
   loadData();
 });

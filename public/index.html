@@ -28,6 +28,7 @@
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"
   ></script>
+  <script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.16/darkreader.min.js"></script>
   <script src="schedule.js"></script>
   <script src="time.js"></script>
   <script src="jquery-scripts.js"></script>
@@ -59,9 +60,6 @@
                 <div class="dropdown-menu"></div>
               </div>
             </li>
-            <!-- <li class="nav-item mx-1">
-            <select name="driver" id="driver" class="custom-select"> </select>
-          </li> -->
             <li class="nav-item mx-1">
               <div class="btn-group" role="group" aria-label="Week switcher">
                 <button
@@ -92,6 +90,13 @@
               >
                 Download Report
               </a>
+            </li>
+            <li class="nav-item mx-1">
+              <div class="custom-control custom-switch" style="padding-top: .3125rem;
+              padding-bottom: .3125rem;">
+                <input type="checkbox" class="custom-control-input" id="darkMode">
+                <label class="custom-control-label" for="darkMode">🌑</label>
+              </div>
             </li>
           </ul>
         </div>
@@ -230,7 +235,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label" for="location">Location:</label>
                 <div class="col-sm-9">
-                  <input type="text" name="location" required class="form-control" />
+                  <input type="text" name="location" id="gmaps" required class="form-control" />
                 </div>
               </div>
               <div class="form-group row">
