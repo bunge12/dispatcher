@@ -465,7 +465,7 @@ $(document).ready(function () {
   $("#newModal, #editModal").on("hidden.bs.modal", function (e) {
     $("#add").trigger("reset");
     $("#edit").trigger("reset");
-    $("#deleteConfirm").collapse();
+    $("#deleteConfirm").collapse("hide");
   });
 
   loadData();
