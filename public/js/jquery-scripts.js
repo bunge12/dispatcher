@@ -153,8 +153,6 @@ $(document).ready(function () {
     $(".modal-new-notification").empty().removeClass("alert alert-warning");
     let length = $(this).val();
     let [week, day, hour] = $(".date_time").val().split(".");
-    let task = $("#task").val();
-    let details = $("#details").val();
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
@@ -176,7 +174,7 @@ $(document).ready(function () {
     let length = $(this).val();
     let new_day = $("#new_day").val();
     let new_time = $("#new_time").val();
-    let task = $("#task").val();
+    let task = $(".task").val();
     let details = $("#details").val();
     console.log(new_day, new_time, length);
     for (let i = 0; i <= length; i++) {
@@ -206,7 +204,7 @@ $(document).ready(function () {
     let length = $(".original_len").val();
     let new_day = $("#new_day").val();
     let new_time = $("#new_time").val();
-    let task = $("#task").val();
+    let task = $(".task").val();
     let details = $("#details").val();
     console.log(task, details);
     let remain = hours.slice(parseInt(new_time) + 1);
@@ -217,20 +215,18 @@ $(document).ready(function () {
           .html(`${text} (${index + 1} hour)`)
       );
     });
-    $(`#length_edit option[value='${$(".original_len").val()}']`).attr(
-      "selected",
-      "selected"
-    );
+    $(`#length_edit option[value='${length}']`).attr("selected", "selected");
     for (let i = 0; i <= length; i++) {
       if (
         !Array.isArray(
           schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i]
             .task
-        ) &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .job != task &&
-        schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
-          .details != details
+        )
+        // &&
+        // schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+        //   .job != task &&
+        // schedule[start].weekdays[new_day].schedule[parseInt(new_time) + i].task
+        //   .details != details
       ) {
         $(".modal-new-notification")
           .text(
@@ -263,7 +259,7 @@ $(document).ready(function () {
       });
     } else {
       $("#editModal").modal("show");
-      $(`#task option`).removeAttr("selected");
+      $(`.task option`).removeAttr("selected");
       let hour = parseInt($(this).attr("id").slice(3));
       let day = $(this).attr("id").slice(1, 2) - 1;
       $(".date_time_original").val(`${start}.${day}.${hour}`);
@@ -306,7 +302,7 @@ $(document).ready(function () {
       }
 
       $(
-        `#task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
+        `.task option[value='${schedule[start].weekdays[day].schedule[hour].task.job}']`
       ).attr("selected", "selected");
       $(`#length_edit option[value='${$(this).attr("colspan") - 1}']`).attr(
         "selected",
@@ -422,14 +418,14 @@ $(document).ready(function () {
   // Listen to dark mode changes
   $(document.body).on("change", "#darkMode", function () {
     if (this.checked) {
-      console.log("checked");
+      // $(".dm-label").text("☀️");
       DarkReader.enable({
         brightness: 100,
         contrast: 90,
         sepia: 10,
       });
     } else {
-      console.log("unchecked");
+      // $(".dm-label").text("🌑");
       DarkReader.disable();
     }
   });
@@ -463,6 +459,7 @@ $(document).ready(function () {
   $(".gmaps").keyup($.debounce(250, callGmaps));
 
   $("#newModal, #editModal").on("hidden.bs.modal", function (e) {
+    $(".autocomplete-items").empty();
     $("#add").trigger("reset");
     $("#edit").trigger("reset");
     $("#deleteConfirm").collapse("hide");

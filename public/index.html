@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dispatcher App</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+
   </head>
   
   <link
@@ -36,7 +38,8 @@
   <body>
     <nav class="navbar navbar-light bg-light navbar-expand-sm py-3">
       <div class="container">
-        <span class="navbar-brand mb-0 h1">Dispatcher</span>
+        <span class="navbar-brand mb-0 h1">
+          Dispatcher</span>
         <div
           class=" justify-content-end"
           id="navbarNav"
@@ -95,7 +98,7 @@
               <div class="custom-control custom-switch" style="padding-top: .3125rem;
               padding-bottom: .3125rem;">
                 <input type="checkbox" class="custom-control-input" id="darkMode">
-                <label class="custom-control-label" for="darkMode">🌑</label>
+                <label class="custom-control-label dm-label" for="darkMode">🌑</label>
               </div>
             </li>
           </ul>
@@ -219,7 +222,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label" for="task">Select Task:</label>
                 <div class="col-sm-9">
-                  <select name="task" id="task" class="custom-select">
+                  <select name="task" class="custom-select task">
                     <option value="Pickup">Pickup</option>
                     <option value="Dropoff">Drop Off</option>
                     <option value="Other">Other</option> </select
@@ -306,7 +309,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" for="task">Select Task:</label>
                   <div class="col-sm-9">
-                    <select name="task" id="task" class="custom-select">
+                    <select name="task"  class="custom-select task">
                       <option value="Pickup">Pickup</option>
                       <option value="Dropoff">Drop Off</option>
                       <option value="Other">Other</option> </select
