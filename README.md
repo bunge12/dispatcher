@@ -1,6 +1,6 @@
 # Dispatcher
 
-Dispatcher is a full-stack web application built with jQuery, Node and Express, that allows for a dispatcher to keep track of their drivers. jQuery was chosen over a front-end framework for the sake of learning and practice.
+Dispatcher is a full-stack web application built with jQuery, Node and Express, that allows for a dispatcher to keep track of their drivers.
 
 This project was created as a part of Rose Rocket coding challenge.
 
